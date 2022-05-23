@@ -1,5 +1,5 @@
 # Terrier, Rails Scheduling Assignment
-### Author Mark Wickline
+#### Author, Mark Wickline
 ----
 
 ## Working Environment
@@ -10,24 +10,30 @@ Rails 7.0.3
 MySQL 8.0.29  
 
 ## Installation
-### Note this installation is for WSL (Windows Subsystem for Linux)
+#### Note this installation is for WSL (Windows Subsystem for Linux)
 Install Ruby `https://gorails.com/setup/ubuntu/18.04`  
 Install MySQL, run  
-`sudo apt-get update`  
-`sudo apt-get install mysql-server mysql-client libmysqlclient-dev`  
+```
+sudo apt-get update  
+sudo apt-get install mysql-server mysql-client libmysqlclient-dev
+```
 Clone this repository, run  
-`git clone https://github.com/klynicol/terrier.git`  
-`cd terrier`  
+```
+git clone https://github.com/klynicol/terrier.git 
+cd terrier
+```
 In my case I had the following error  
 `Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (13)`  
 To solve change the permissions of the mysqld folder, run  
 `sudo chmod -R 755 /var/run/mysqld`  
 Create the terrier user on mysql, run  
-`sudo mysql -u root`  
-`CREATE USER 'terrier'@'localhost' IDENTIFIED BY 'password';`  
-`FLUSH PRIVILEGES;`  
-`GRANT ALL ON *.* TO `terrier`@`localhost`;`  
-`EXIT;`  
+```
+sudo mysql -u root
+CREATE USER 'terrier'@'localhost' IDENTIFIED BY 'password';
+FLUSH PRIVILEGES;
+GRANT ALL ON *.* TO `terrier`@`localhost`;
+EXIT;
+```
 Install dependencies, run  
 `bundle install`  
 Run the rails database rake, run  
