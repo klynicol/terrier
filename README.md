@@ -23,9 +23,13 @@ git clone https://github.com/klynicol/terrier.git
 cd terrier
 ```
 In my case I had the following error  
-`Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (13)`  
+```
+Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (13)
+```
 To solve change the permissions of the mysqld folder, run  
-`sudo chmod -R 755 /var/run/mysqld`  
+```
+sudo chmod -R 755 /var/run/mysqld
+```
 Create the terrier user on mysql, run  
 ```
 sudo mysql -u root
@@ -35,13 +39,21 @@ GRANT ALL ON *.* TO `terrier`@`localhost`;
 EXIT;
 ```
 Install dependencies, run  
-`bundle install`  
+```
+bundle install
+```
 Run the rails database rake, run  
-`rails db:setup`  
+```
+rails db:setup
+```
 Import initial data, run  
-`rake initial_data:import`  
+```
+rake initial_data:import
+```
 Serve the application, run  
-`rails server`  
+```
+rails server
+```  
 
 
 ## Gem file for reference
