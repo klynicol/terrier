@@ -1,0 +1,75 @@
+<%
+work_day_start = 5
+work_day_end = 18
+
+grid_col_num = 2
+%>
+<script>
+    const fullDayTimeStart = <%= work_day_start %> * 60 * 60; //seconds
+    const fullDayDuration = <%= work_day_end - work_day_start %> * 60 * 60; //seconds
+</script>
+
+<div class="grid-wrapper">
+
+    <% @technicians.each do |technician| %>
+
+        <div class="grid-col-<%= grid_col_num %> tech-name" 
+            style="grid-row: 1/2">
+            <%= technician.name %>
+        </div>
+
+        <div id="<%= technician.id %>-fullday" 
+            class="grid-col-<%= grid_col_num %> tech-fullday"
+            style="grid-row: 2/<%= work_day_end - 3%>"
+            data-tech-id="<%= technician.id %>">
+
+            <% technician.work_orders.order("time ASC").each do |wo|
+                viewing_date = wo.time.strftime("%b %-d, %Y") if !viewing_date
+            %>
+                <div class="wo-block"
+                    data-tech-id="<%= technician.id %>"
+                    data-time-start="<%= wo.time.seconds_since_midnight %>" 
+                    data-duration="<%= wo.duration * 60 %>"
+                    data-wo-id="<%= wo.id %>">
+                    <div class="wo-block-info">
+                        <div>Location: <%= wo.location.city %></div>
+                        <div>Name: <%= wo.location.name %></div>
+                        <div>Time: <%= wo.time.strftime("%l:%M%p") %></div>
+                        <div>Price: $<%= wo.price %>.00</div>
+                    </div>
+                </div>
+            <% end #End work orders loop %>
+
+        </div>
+
+        <% grid_col_num += 1 %>
+
+    <% end #End technicians loop %>
+
+    <% #Paint background cells to help lining up time of day visually %>
+    <% (2..5).each do |x| %>
+        <% (2..(work_day_end - 4)).each do |y| %>
+            <div class="grid-col-<%= x %> tech-<%= x - 1 %> bkg-cell" 
+                style="grid-row: <%= y %>/<%= y + 1 %>">
+                    <div></div>
+                </div>
+        <% end %>
+    <% end %>
+
+    <% #Paint time of day labels, left column %>
+    <% hour_row = 2 %>
+    <% (work_day_start..work_day_end).each do |hour| %>
+        <div class="grid-col-1 tod-label" 
+            style="grid-row: <%= hour_row %>/<%= hour_row + 1 %>">
+             <span><%= Time.strptime("#{hour}:00", '%k:%M').strftime('%l:%M%p') %></span>
+        </div>
+        <% hour_row += 1 %>
+    <% end %>
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span id="modal-close" class="close">&times;</span>
+        <p>Theres is <span id="modal-minutes"></span> minutes available between work orders, or day start/end.</p>
+    </div>
+</div>
